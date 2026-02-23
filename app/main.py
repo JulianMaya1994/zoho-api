@@ -22,7 +22,7 @@ def get_tickets():
     conn = get_conn()
     cur = conn.cursor()
 
-    cur.execute("SELECT id, subject, created_time FROM tickets_test LIMIT 50")
+    cur.execute("SELECT id, subject, created_time FROM tickets_test")
     rows = cur.fetchall()
 
     cur.close()
