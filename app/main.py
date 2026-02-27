@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import psycopg2
+from psycopg2.extras import RealDictCursor
 import os
 
 app = FastAPI()
@@ -15,20 +16,19 @@ def get_conn():
 
 @app.get("/")
 def root():
-    return {"status": "ok"}
+    return {"status": "ok, API conectada a la nueva base de datos"}
 
 @app.get("/tickets")
 def get_tickets():
     conn = get_conn()
-    cur = conn.cursor()
+    # Usamos RealDictCursor para que Postgres devuelva el JSON perfecto con los 18 campos + el raw_data
+    cur = conn.cursor(cursor_factory=RealDictCursor)
 
-    cur.execute("SELECT id, subject, created_time FROM tickets_test")
+    # Consultamos la tabla NUEVA
+    cur.execute("SELECT * FROM tickets LIMIT 100")
     rows = cur.fetchall()
 
     cur.close()
     conn.close()
 
-    return [
-        {"id": r[0], "subject": r[1], "created_time": r[2]}
-        for r in rows
-    ]
+    return rows
