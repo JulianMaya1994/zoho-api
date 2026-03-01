@@ -25,7 +25,7 @@ def get_tickets():
     cur = conn.cursor(cursor_factory=RealDictCursor)
 
     # Consultamos la tabla NUEVA
-    cur.execute("SELECT * FROM tickets LIMIT 100")
+    cur.execute("SELECT * FROM tickets")
     rows = cur.fetchall()
 
     cur.close()
