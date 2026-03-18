@@ -18,14 +18,15 @@ def get_conn():
 def root():
     return {"status": "ok, API conectada a la nueva base de datos"}
 
+# Le agregamos 'limit' y 'offset' para no saturar la memoria del contenedor
 @app.get("/tickets")
-def get_tickets():
+def get_tickets(limit: int = 100, offset: int = 0):
     conn = get_conn()
-    # Usamos RealDictCursor para que Postgres devuelva el JSON perfecto con los 18 campos + el raw_data
+    # Usamos RealDictCursor para que Postgres devuelva el JSON con las 187+ columnas y el raw_data
     cur = conn.cursor(cursor_factory=RealDictCursor)
 
-    # Consultamos la tabla NUEVA
-    cur.execute("SELECT * FROM tickets")
+    # Consultamos la tabla NUEVA con un límite de seguridad
+    cur.execute("SELECT * FROM tickets LIMIT %s OFFSET %s", (limit, offset))
     rows = cur.fetchall()
 
     cur.close()
