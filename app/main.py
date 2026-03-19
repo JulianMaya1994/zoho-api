@@ -20,7 +20,7 @@ def root():
 
 # Le agregamos 'limit' y 'offset' para no saturar la memoria del contenedor
 @app.get("/tickets")
-def get_tickets(limit: int = 100, offset: int = 0):
+def get_tickets():
     conn = get_conn()
     # Usamos RealDictCursor para que Postgres devuelva el JSON con las 187+ columnas y el raw_data
     cur = conn.cursor(cursor_factory=RealDictCursor)
