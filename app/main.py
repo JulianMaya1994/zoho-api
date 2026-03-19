@@ -26,7 +26,7 @@ def get_tickets():
     cur = conn.cursor(cursor_factory=RealDictCursor)
 
     # Consultamos la tabla NUEVA con un límite de seguridad
-    cur.execute("SELECT * FROM tickets LIMIT %s OFFSET %s", (limit, offset))
+    cur.execute("SELECT * FROM tickets)
     rows = cur.fetchall()
 
     cur.close()
